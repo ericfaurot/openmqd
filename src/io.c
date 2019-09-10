@@ -16,7 +16,6 @@
  */
 
 #include <sys/types.h>
-#include <sys/queue.h>
 #include <sys/socket.h>
 
 #include <err.h>
@@ -27,15 +26,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#ifdef IO_TLS
+#include <tls.h>
+#endif
 #include <unistd.h>
 
 #include "io.h"
 #include "iobuf.h"
 #include "log.h"
-
-#ifdef IO_TLS
-#include <tls.h>
-#endif
 
 enum {
 	IO_STATE_DOWN,
@@ -334,10 +332,10 @@ io_disconnect(struct io *io)
 	return -1;
 }
 
-int
-io_start_tls(struct io *io, void *tls)
-{
 #ifdef IO_TLS
+int
+io_start_tls(struct io *io, struct tls *tls)
+{
 	int mode, r;
 
 	mode = io->flags & IO_RW;
@@ -364,11 +362,8 @@ io_start_tls(struct io *io, void *tls)
 	}
 
 	return 0;
-#else
-	errno = ENOSYS;
-	return -1;
-#endif
 }
+#endif /* IO_TLS */
 
 void
 io_pause(struct io *io, int dir)
@@ -921,7 +916,6 @@ io_connect_next(struct io *io)
 }
 
 #ifdef IO_TLS
-
 
 void
 io_dispatch_handshake_tls(int fd, short event, void *humppa)

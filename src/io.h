@@ -33,6 +33,7 @@ enum {
 
 struct io;
 struct shbuf;
+struct tls;
 
 void io_trace(int);
 const char* io_strio(struct io *);
@@ -59,7 +60,7 @@ int	io_detach(struct io *io);
 int	io_close(struct io *io);
 int	io_connect(struct io *, struct addrinfo *);
 int	io_disconnect(struct io *io);
-int	io_start_tls(struct io *, void *);
+int	io_start_tls(struct io *, struct tls *);
 
 /* Flow control  */
 void	io_pause(struct io *, int);

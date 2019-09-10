@@ -25,11 +25,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-
 #ifdef IO_TLS
 #include <tls.h>
 #endif
+#include <unistd.h>
 
 #include "iobuf.h"
 #include "shbuf.h"
@@ -427,7 +426,7 @@ iobuf_flush(struct iobuf *io, int fd)
 #ifdef IO_TLS
 
 int
-iobuf_flush_tls(struct iobuf *io, void *tls)
+iobuf_flush_tls(struct iobuf *io, struct tls *tls)
 {
 	ssize_t s;
 
@@ -439,7 +438,7 @@ iobuf_flush_tls(struct iobuf *io, void *tls)
 }
 
 ssize_t
-iobuf_write_tls(struct iobuf *io, void *tls)
+iobuf_write_tls(struct iobuf *io, struct tls *tls)
 {
 	struct ioqbuf *q;
 	ssize_t n;
@@ -461,7 +460,7 @@ iobuf_write_tls(struct iobuf *io, void *tls)
 }
 
 ssize_t
-iobuf_read_tls(struct iobuf *io, void *tls)
+iobuf_read_tls(struct iobuf *io, struct tls *tls)
 {
 	ssize_t n;
 

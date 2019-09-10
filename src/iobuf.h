@@ -15,6 +15,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+struct tls;
 struct shbuf;
 struct ioqbuf;
 
@@ -47,7 +48,7 @@ size_t	iobuf_left(struct iobuf *);
 char   *iobuf_data(struct iobuf *);
 char   *iobuf_getline(struct iobuf *, size_t *);
 ssize_t	iobuf_read(struct iobuf *, int);
-ssize_t	iobuf_read_tls(struct iobuf *, void *);
+ssize_t	iobuf_read_tls(struct iobuf *, struct tls *);
 
 size_t  iobuf_queued(struct iobuf *);
 void*   iobuf_reserve(struct iobuf *, size_t);
@@ -57,6 +58,6 @@ int	iobuf_fqueue(struct iobuf *, const char *, ...);
 int	iobuf_vfqueue(struct iobuf *, const char *, va_list);
 int	iobuf_queue_shbuf(struct iobuf *, struct shbuf *);
 int	iobuf_flush(struct iobuf *, int);
-int	iobuf_flush_tls(struct iobuf *, void *);
+int	iobuf_flush_tls(struct iobuf *, struct tls *);
 ssize_t	iobuf_write(struct iobuf *, int);
-ssize_t	iobuf_write_tls(struct iobuf *, void *);
+ssize_t	iobuf_write_tls(struct iobuf *, struct tls *);
