@@ -34,6 +34,15 @@
 #include "iobuf.h"
 #include "shbuf.h"
 
+struct ioqbuf {
+	struct ioqbuf	*next;
+	char		*buf;
+	struct shbuf	*shbuf;
+	size_t		 size;
+	size_t		 wpos;
+	size_t		 rpos;
+};
+
 #define IOBUF_MAX	65536
 #define IOBUFQ_MIN	4096
 

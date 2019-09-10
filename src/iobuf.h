@@ -16,15 +16,7 @@
  */
 
 struct shbuf;
-
-struct ioqbuf {
-	struct ioqbuf	*next;
-	char		*buf;
-	struct shbuf	*shbuf;
-	size_t		 size;
-	size_t		 wpos;
-	size_t		 rpos;
-};
+struct ioqbuf;
 
 struct iobuf {
 	char		*buf;
