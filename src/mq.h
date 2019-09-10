@@ -67,7 +67,7 @@ size_t mq_getmaxsize(struct mq *);
 size_t mq_getmaxreloffset(struct mq *);
 size_t mq_getmaxreltime(struct mq *);
 
-int mq_push(struct mq *, uint64_t, const char *, size_t, const void *);
+int mq_push(struct mq *, uint64_t, const char *, const void *, size_t);
 int mq_rotate(struct mq *, uint64_t *);
 
 /* Read queue */

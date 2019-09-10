@@ -532,7 +532,7 @@ queue_flush(struct mqd_queue *q)
 
 		if (q->flags & QUEUE_PERSIST && !q->error) {
 			r = mq_push(q->mq, msg->timestamp, msg->key,
-			    msg->datalen, msg->data);
+			    msg->data, msg->datalen);
 			if (r == -1) {
 				log_warn("mq_push");
 				if (mq_close(q->mq) == -1)

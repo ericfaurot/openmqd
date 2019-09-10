@@ -111,7 +111,7 @@ main_mqtest(int argc, char **argv)
 			line[linelen] = '\0';
 			linelen--;
 		}
-		while ((r = mq_push(mq, 0, key, linelen, line)) == 0) {
+		while ((r = mq_push(mq, 0, key, line, linelen)) == 0) {
 			mq_rotate(mq, &offset);
 			if (verbose)
 				printf("rotating queue at offset %llu\n", offset);

@@ -429,7 +429,7 @@ mq_info(struct mq *mq, struct mq_seginfo *nfo)
  */
 int
 mq_push(struct mq *mq, uint64_t timestamp, const char *key,
-    size_t datalen, const void *data)
+    const void *data, size_t datalen)
 {
 	struct iovec iov;
 	size_t keylen;
