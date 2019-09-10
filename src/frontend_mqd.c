@@ -228,7 +228,6 @@ mqd_dispatch_io(struct io *io, int evt, void *arg)
 	switch (evt) {
 	case IO_CONNECTED:
 	case IO_TLSREADY:
-	case IO_TLSERROR:
 		return;
 
 	case IO_DATAIN:

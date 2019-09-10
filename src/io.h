@@ -26,7 +26,6 @@ enum {
 	IO_DISCONNECTED,	/* error?			*/
 	IO_TIMEOUT,		/* error?			*/
 	IO_ERROR,		/* details?			*/
-	IO_TLSERROR,		/* XXX - needs more work	*/
 };
 
 #define IO_IN	0x1

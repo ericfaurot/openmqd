@@ -157,8 +157,6 @@ io_strevent(int evt)
 		return "IO_TIMEOUT";
 	case IO_ERROR:
 		return "IO_ERROR";
-	case IO_TLSERROR:
-		return "IO_TLSERROR";
 	default:
 		(void)snprintf(buf, sizeof(buf), "IO_? %d", evt);
 		return buf;
