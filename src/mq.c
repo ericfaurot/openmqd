@@ -400,7 +400,7 @@ int
 mq_rotate(struct mq *mq, uint64_t *poffset)
 {
 	if (mq->mode != MQ_WRITE) {
-		errno = ENOSYS;
+		errno = EBADF;
 		return -1;
 	}
 	*poffset = mq->baseoffset + mq->currreloffset;
@@ -435,7 +435,7 @@ mq_push(struct mq *mq, uint64_t timestamp, const char *key,
 	size_t keylen;
 
 	if (mq->mode != MQ_WRITE) {
-		errno = ENOSYS;
+		errno = EBADF;
 		return -1;
 	}
 
@@ -462,7 +462,7 @@ mq_next(struct mq *mq, struct mq_recinfo *nfo)
 	struct mqrechdr rechdr;
 
 	if (mq->mode != MQ_READ) {
-		errno = ENOSYS;
+		errno = EBADF;
 		return -1;
 	}
 
@@ -495,7 +495,7 @@ mq_payload(struct mq *mq, void *buf, size_t len)
 	int r;
 
 	if (mq->mode != MQ_READ) {
-		errno = ENOSYS;
+		errno = EBADF;
 		return -1;
 	}
 
