@@ -1061,7 +1061,6 @@ io_reload_tls(struct io *io)
 		dispatch = io_dispatch_handshake_tls;
 		break;
 	case IO_STATE_UP:
-		ev = 0;
 		if (IO_READING(io) && !(io->flags & IO_PAUSE_IN)) {
 			ev = EV_READ;
 			dispatch = io_dispatch_read_tls;
@@ -1071,7 +1070,7 @@ io_reload_tls(struct io *io)
 			ev = EV_WRITE;
 			dispatch = io_dispatch_write_tls;
 		}
-		if (!ev)
+		else
 			return; /* paused */
 		break;
 	default:
