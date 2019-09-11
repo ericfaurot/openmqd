@@ -345,10 +345,10 @@ static int
 request_cmp(struct request *a, struct request *b)
 {
 	if (a->id < b->id)
-		return (-1);
+		return -1;
 	if (a->id > b->id)
-		return (1);
-	return (0);
+		return 1;
+	return 0;
 }
 
 SPLAY_GENERATE(reqtree, request, entry, request_cmp);

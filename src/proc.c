@@ -436,7 +436,7 @@ m_end(struct imsgproc *p)
 int
 m_is_eom(struct imsgproc *p)
 {
-	return (p->m_in.pos == p->m_in.end);
+	return p->m_in.pos == p->m_in.end;
 }
 
 void

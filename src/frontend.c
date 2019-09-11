@@ -55,10 +55,10 @@ static int
 conn_cmp(struct conn *a, struct conn *b)
 {
 	if (a->id < b->id)
-		return (-1);
+		return -1;
 	if (a->id > b->id)
-		return (1);
-	return (0);
+		return 1;
+	return 0;
 }
 
 SPLAY_GENERATE(conntree, conn, entry, conn_cmp);

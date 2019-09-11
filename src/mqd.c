@@ -208,7 +208,7 @@ main(int argc, char **argv)
 
 	priv_shutdown();
 
-	return (0);
+	return 0;
 }
 
 static void

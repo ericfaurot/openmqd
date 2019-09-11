@@ -80,7 +80,7 @@ log_setverbose(int v)
 int
 log_getverbose(void)
 {
-	return (verbose);
+	return verbose;
 }
 
 void

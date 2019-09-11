@@ -113,7 +113,7 @@ static int
 refentry_cmp(struct refentry *a, struct refentry *b)
 {
 	if (a->ptr < b->ptr)
-		return (-1);
+		return -1;
 	if (a->ptr > b->ptr)
 		return 1;
 	return 0;

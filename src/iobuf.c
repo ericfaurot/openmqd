@@ -60,15 +60,15 @@ iobuf_init(struct iobuf *io, size_t size, size_t max)
 		size = max;
 
 	if (size > max)
-		return (-1);
+		return -1;
 
 	if ((io->buf = calloc(size, 1)) == NULL)
-		return (-1);
+		return -1;
 
 	io->size = size;
 	io->max = max;
 
-	return (0);
+	return 0;
 }
 
 void
@@ -116,19 +116,19 @@ iobuf_extend(struct iobuf *io, size_t n)
 	char *t;
 
 	if (n > io->max)
-		return (-1);
+		return -1;
 
 	if (io->max - io->size < n)
-		return (-1);
+		return -1;
 
 	t = recallocarray(io->buf, io->size, io->size + n, 1);
 	if (t == NULL)
-		return (-1);
+		return -1;
 
 	io->size += n;
 	io->buf = t;
 
-	return (0);
+	return 0;
 }
 
 size_t
@@ -189,10 +189,10 @@ iobuf_getline(struct iobuf *iobuf, size_t *rlen)
 			buf[len] = '\0';
 			if (rlen)
 				*rlen = len;
-			return (buf);
+			return buf;
 		}
 
-	return (NULL);
+	return NULL;
 }
 
 void
@@ -220,15 +220,15 @@ iobuf_read(struct iobuf *io, int fd)
 	if (n == -1) {
 		/* XXX is this really what we want? */
 		if (errno == EAGAIN || errno == EINTR)
-			return (IOBUF_WANT_READ);
-		return (IOBUF_ERROR);
+			return IOBUF_WANT_READ;
+		return IOBUF_ERROR;
 	}
 	if (n == 0)
-		return (IOBUF_CLOSED);
+		return IOBUF_CLOSED;
 
 	io->wpos += n;
 
-	return (n);
+	return n;
 }
 
 struct ioqbuf *
@@ -240,7 +240,7 @@ ioqbuf_alloc(struct iobuf *io, size_t len)
 		len = IOBUFQ_MIN;
 
 	if ((q = malloc(sizeof(*q) + len)) == NULL)
-		return (NULL);
+		return NULL;
 
 	q->rpos = 0;
 	q->wpos = 0;
@@ -255,7 +255,7 @@ ioqbuf_alloc(struct iobuf *io, size_t len)
 		io->outqlast->next = q;
 	io->outqlast = q;
 
-	return (q);
+	return q;
 }
 
 size_t
@@ -271,18 +271,18 @@ iobuf_reserve(struct iobuf *io, size_t len)
 	void *r;
 
 	if (len == 0)
-		return (NULL);
+		return NULL;
 
 	if (((q = io->outqlast) == NULL) || q->size - q->wpos <= len) {
 		if ((q = ioqbuf_alloc(io, len)) == NULL)
-			return (NULL);
+			return NULL;
 	}
 
 	r = q->buf + q->wpos;
 	q->wpos += len;
 	io->queued += len;
 
-	return (r);
+	return r;
 }
 
 int
@@ -291,14 +291,14 @@ iobuf_queue(struct iobuf *io, const void *data, size_t len)
 	void *buf;
 
 	if (len == 0)
-		return (0);
+		return 0;
 
 	if ((buf = iobuf_reserve(io, len)) == NULL)
-		return (-1);
+		return -1;
 
 	memmove(buf, data, len);
 
-	return (len);
+	return len;
 }
 
 int
@@ -312,7 +312,7 @@ iobuf_queuev(struct iobuf *io, const struct iovec *iov, int iovcnt)
 		len += iov[i].iov_len;
 
 	if ((buf = iobuf_reserve(io, len)) == NULL)
-		return (-1);
+		return -1;
 
 	for (i = 0; i < iovcnt; i++) {
 		if (iov[i].iov_len == 0)
@@ -321,7 +321,7 @@ iobuf_queuev(struct iobuf *io, const struct iovec *iov, int iovcnt)
 		buf += iov[i].iov_len;
 	}
 
-	return (0);
+	return 0;
 
 }
 
@@ -335,7 +335,7 @@ iobuf_fqueue(struct iobuf *io, const char *fmt, ...)
 	len = iobuf_vfqueue(io, fmt, ap);
 	va_end(ap);
 
-	return (len);
+	return len;
 }
 
 int
@@ -347,12 +347,12 @@ iobuf_vfqueue(struct iobuf *io, const char *fmt, va_list ap)
 	len = vasprintf(&buf, fmt, ap);
 
 	if (len == -1)
-		return (-1);
+		return -1;
 
 	len = iobuf_queue(io, buf, len);
 	free(buf);
 
-	return (len);
+	return len;
 }
 
 int
@@ -400,15 +400,15 @@ iobuf_write(struct iobuf *io, int fd)
 	n = writev(fd, iov, i);
 	if (n == -1) {
 		if (errno == EAGAIN || errno == EINTR)
-			return (IOBUF_WANT_WRITE);
+			return IOBUF_WANT_WRITE;
 		if (errno == EPIPE)
-			return (IOBUF_CLOSED);
-		return (IOBUF_ERROR);
+			return IOBUF_CLOSED;
+		return IOBUF_ERROR;
 	}
 
 	iobuf_drain(io, n);
 
-	return (n);
+	return n;
 }
 
 int
@@ -418,9 +418,9 @@ iobuf_flush(struct iobuf *io, int fd)
 
 	while (io->queued)
 		if ((s = iobuf_write(io, fd)) < 0)
-			return (s);
+			return s;
 
-	return (0);
+	return 0;
 }
 
 #ifdef IO_TLS
@@ -432,9 +432,9 @@ iobuf_flush_tls(struct iobuf *io, struct tls *tls)
 
 	while (io->queued)
 		if ((s = iobuf_write_tls(io, tls)) < 0)
-			return (s);
+			return s;
 
-	return (0);
+	return 0;
 }
 
 ssize_t
@@ -476,7 +476,7 @@ iobuf_read_tls(struct iobuf *io, struct tls *tls)
 
 	io->wpos += n;
 
-	return (n);
+	return n;
 }
 
 #endif /* IO_TLS */

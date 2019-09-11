@@ -59,5 +59,5 @@ main(int argc, char **argv)
 	argc -= optind;
 	argv += optind;
 
-	return (0);
+	return 0;
 }
