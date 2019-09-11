@@ -18,7 +18,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -340,15 +339,15 @@ io_start_tls(struct io *io, struct tls *tls)
 
 	mode = io->flags & IO_RW;
 	if (mode == 0 || mode == IO_RW)
-		errx(1, "io_start_tls(): full-duplex or unset");
+		fatalx("%s: full-duplex or unset", __func__);
 
 	if (io->tls)
-		errx(1, "io_start_tls(): TLS already started");
+		fatalx("%s: TLS already started", __func__);
 
 	if (mode == IO_WRITE) {
 		io->state = IO_STATE_CONNECT_TLS;
 		io->tls = tls;
-		r = tls_connect_socket(io->tls, io->sock, "mail.gandi.net");
+		r = tls_connect_socket(io->tls, io->sock, NULL);
 		if (r == -1) {
 			return -1;
 		}
@@ -1074,7 +1073,7 @@ io_reload_tls(struct io *io)
 			return; /* paused */
 		break;
 	default:
-		errx(1, "io_reload_tls(): bad state");
+		fatalx("%s: bad state", __func__);
 	}
 
 	io_reset(io, ev, dispatch);
